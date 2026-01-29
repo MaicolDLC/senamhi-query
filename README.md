@@ -109,7 +109,6 @@ Lat / Lon  : -8.18475 , -76.50789
 
 ## Utilizar variable 
 ```python
-estacion = get_station("cutervo")
 codigos = [e["codigo"] for e in estacion]
 print("Códigos encontrados:", codigos)
 ```
