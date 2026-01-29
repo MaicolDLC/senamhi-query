@@ -30,7 +30,7 @@ Es una herramienta útil para meteorólogos, hidrólogos, estudiantes e investig
 - Python 3.8 o superior  
 - Librerías:
 
-```bash
+```python
 pip install requests
 pip install git+https://github.com/MaicolDLC/senamhi-query.git
 ```
