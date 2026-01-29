@@ -106,6 +106,18 @@ Lat / Lon  : -8.18475 , -76.50789
 ───────────────────────────────────────────────────────────────────────────
 ---------------------------------------------------------------------------
 ```
+## Observar todas las estaciones 
+```python
+todas = get_station("")
+```
+## Observar todas las EMA  
+```python
+ema = get_station(categoria_filtro = "EMA") 
+```
+## Observar todas las estaciones que contengan "PUENTE" y sean EMA 
+```python
+puente_ema = get_station("PUENTE", categoria_filtro = "EMA") 
+```
 
 ## Utilizar variable 
 ```python
