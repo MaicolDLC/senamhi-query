@@ -99,4 +99,4 @@ def get_station(criterio_busqueda):
 
     print("─" * 75)
 
-    return None 
+    return estaciones_encontradas 
