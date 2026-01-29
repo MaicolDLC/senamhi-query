@@ -1,4 +1,4 @@
-# 🌦️ ESTACIONES_SENAMHI
+# 🌦️ ESTACIONES SENAMHI
 
 Consulta de Estaciones SENAMHI en Python
 
