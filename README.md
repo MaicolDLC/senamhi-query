@@ -110,7 +110,7 @@ Lat / Lon  : -8.18475 , -76.50789
 ## Utilizar variable 
 ```python
 estacion = get_station("cutervo")
-codigos = [e["codigo"] for e in res]
+codigos = [e["codigo"] for e in estacion]
 print("Códigos encontrados:", codigos)
 ```
 ```text
@@ -118,7 +118,7 @@ Códigos encontrados: ['106057', '4726602']
 ```
 ```python
 # Tomar solo estaciones automáticas
-emas = [e for e in res if e["estado"] == "AUTOMATICA"]
+emas = [e for e in estacion if e["estado"] == "AUTOMATICA"]
 
 for e in emas:
     print("EMA:", e["codigo"]) 
