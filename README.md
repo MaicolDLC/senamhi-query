@@ -42,7 +42,7 @@ from senamhi_query import get_station
 
 ## Buscar por nombre de estación
 ```python
-estacion = get_station("cutervo")
+estacion = get_station("cutervo", imprimir=True)
 ```
 ## Ejemplo de salida 
 
@@ -66,9 +66,9 @@ Lat / Lon  : -6.37914 , -78.81339
 
 ## Buscar por código de estación 
 ```python
-estacion = get_station("106057")
+estacion = get_station("106057", imprimir=True)
 o
-estacion = get_station(106057)
+estacion = get_station(106057, imprimir=True)
 ```
 ## Ejemplo de salida 
 
@@ -84,7 +84,7 @@ Lat / Lon  : -6.37964 , -78.80512
 
 ## Buscar por segmento de palabra 
 ```python
-estacion = get_station("tocache")
+estacion = get_station("tocache", imprimir=True)
 ```
 
 ## Ejemplo de salida 
@@ -108,15 +108,21 @@ Lat / Lon  : -8.18475 , -76.50789
 ```
 ## Observar todas las estaciones 
 ```python
-todas = get_station("")
+todas = get_station("", imprimir=True)
 ```
 ## Observar todas las EMA  
 ```python
-ema = get_station(categoria_filtro = "EMA") 
+ema = get_station(categoria = "EMA", imprimir=True) 
 ```
+
+## Observar todas las estaciones que contengan "PUENTE" 
+```python
+puente = get_station("PUENTE", imprimir=True) 
+```
+
 ## Observar todas las estaciones que contengan "PUENTE" y sean EMA 
 ```python
-puente_ema = get_station("PUENTE", categoria_filtro = "EMA") 
+puente_ema = get_station("PUENTE", categoria = "EMA", imprimir=True) 
 ```
 
 ## Utilizar variable 
@@ -128,11 +134,14 @@ print("Códigos encontrados:", codigos)
 Códigos encontrados: ['106057', '4726602']
 ```
 ```python
-# Tomar solo estaciones automáticas
-emas = [e for e in estacion if e["estado"] == "AUTOMATICA"]
+todas_ema = get_station("", categoria = "ema")  # trae todas las estaciones
+# Todas las EMA : 
+for e in todas_ema:
+    if e["categoria"] == "EMA":
+        print(e["estacion"]) 
 
-for e in emas:
-    print("EMA:", e["codigo"]) 
+for e in todas_ema:
+    print(e["estacion"],':', e["codigo"])   
 ```
 ```text
 EMA: 4726602
