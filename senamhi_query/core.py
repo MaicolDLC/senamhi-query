@@ -2,11 +2,6 @@ import requests
 import re
 
 def get_station(criterio_busqueda):
-    """
-    Consulta estaciones SENAMHI por nombre o por código.
-    El tipo de búsqueda se detecta automáticamente.
-    """
-
     CATEGORIAS_SENAMHI = {
         "CP": "Climatológica Principal",
         "CO": "Climatológica Ordinaria",
@@ -32,7 +27,8 @@ def get_station(criterio_busqueda):
 
     bloques = html.split('"nom":')
 
-    resultados = []
+    estaciones_encontradas = []
+
 
     for bloque in bloques[1:]:
         nombre = bloque.split('"')[1]
@@ -43,15 +39,26 @@ def get_station(criterio_busqueda):
         for p in partes:
             if '"cod":' in p:
                 est["codigo"] = re.sub(r'\D', '', p)
+
             elif '"cate":' in p:
                 est["categoria"] = p.replace('"cate":', '').strip().strip('"')
-            elif '"estado":' in p:
-                est["estado_raw"] = re.sub(r'[^A-Z]', '', p.upper())
-            elif '"lat":' in p:
-                est["lat"] = p.replace('"lat":', '').strip()
-            elif '"lon":' in p:
-                est["lon"] = p.replace('"lon":', '').strip()
 
+            elif '"estado":' in p:
+                # 🔑 este estado es el que usa el servidor
+                est["estado_srv"] = p.replace('"estado":', '').strip().strip('"')
+                est["estado_raw"] = re.sub(r'[^A-Z]', '', p.upper())
+
+            elif '"ico":' in p:
+                # 🔑 clave para la descarga
+                est["ico"] = p.replace('"ico":', '').strip().strip('"')
+
+            elif '"lat":' in p:
+                est["lat"] = float(p.replace('"lat":', '').strip())
+
+            elif '"lon":' in p:
+                est["lon"] = float(p.replace('"lon":', '').strip())
+
+        # ---- Condición de búsqueda ----
         coincide = False
 
         if buscar_por_codigo and est.get("codigo") == criterio:
@@ -62,9 +69,11 @@ def get_station(criterio_busqueda):
         if not coincide:
             continue
 
+        # ---- Categoría ----
         sigla_cat = est.get("categoria", "ND")
         cat_larga = CATEGORIAS_SENAMHI.get(sigla_cat, "No definida por SENAMHI")
 
+        # ---- Estado visible ----
         estado_raw = est.get("estado_raw", "")
 
         if "AUTO" in estado_raw:
@@ -76,19 +85,9 @@ def get_station(criterio_busqueda):
         else:
             estado_final = "NO DEFINIDO"
 
-        est_final = {
-            "estacion": est.get("estacion"),
-            "codigo": est.get("codigo"),
-            "categoria_sigla": sigla_cat,
-            "categoria": cat_larga,
-            "estado": estado_final,
-            "lat": est.get("lat"),
-            "lon": est.get("lon"),
-        }
+        est["estado"] = estado_final
 
-        resultados.append(est_final)
-
-        # Mantener prints como tú pediste
+        # ---- Mostrar ----
         print("─" * 75)
         print(f"Estación   : {est['estacion']}")
         print(f"Código     : {est.get('codigo')}")
@@ -96,6 +95,8 @@ def get_station(criterio_busqueda):
         print(f"Estado     : {estado_final}")
         print(f"Lat / Lon  : {est.get('lat')} , {est.get('lon')}")
 
+        estaciones_encontradas.append(est)
+
     print("─" * 75)
 
-    return resultados
+    return None 
